@@ -1,0 +1,6 @@
+server:
+  port: 8086
+
+client:
+  deal:
+    endpoint: 'http://127.0.0.1:8085/deal'
