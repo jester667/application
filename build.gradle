@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '2.7.5'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'org.openapi.generator' version '5.3.1'
+    id 'jacoco'
 }
 
 group = 'ru.neoflex'
@@ -67,3 +68,33 @@ dependencyManagement {
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.1"
     }
 }
+
+jacocoTestCoverageVerification {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: 'ru/neoflex/msapplication/model/**')
+        })) // exclude model class
+    }
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.01
+            }
+        }
+    }
+}
+
+
+jacocoTestReport {
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: 'ru/neoflex/msapplication/model/**')
+        })) // exclude model class
+    }
+    reports {
+        xml.enabled true
+        html.enabled false
+    }
+}
+
+check.dependsOn jacocoTestReport
